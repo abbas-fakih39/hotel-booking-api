@@ -16,8 +16,6 @@ router.get('/rooms', clientController.listRooms);
 //recupere une chambre par id
 router.get('/rooms/:id', clientController.getRoom);
 
-// ===== GESTION DES RÉSERVATIONS =====
-
 //POST /api/rooms/:roomId/book
 //reserve une chambre
 router.post('/rooms/:roomId/book', clientController.bookRoom);

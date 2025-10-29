@@ -9,8 +9,6 @@ const handleError = (res, error, message) => {
   });
 };
 
-// ==================== INFORMATIONS HÔTEL ====================
-
 //recuperer les informations de l'hotel
 export const getHotelInfo = async (req, res) => {
   try {
