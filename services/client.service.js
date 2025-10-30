@@ -23,28 +23,30 @@ export const getHotelInfo = async () => {
   };
 };
 
-//recuperer toutes les chambres
-export const getAllRooms = async () => {
+//recuperer toutes les chambres avec filtres optionnels
+export const getAllRooms = async (filters = {}) => {
   const hotel = await readHotel();
-  return hotel.rooms;
+  let rooms = hotel.rooms;
+
+  // Filtrer par capacité si fourni
+  if (filters.capacity) {
+    const capacity = parseInt(filters.capacity);
+    rooms = rooms.filter(room => room.capacity === capacity);
+  }
+
+  // Filtrer par prix maximum si fourni
+  if (filters.maxPrice) {
+    const maxPrice = parseInt(filters.maxPrice);
+    rooms = rooms.filter(room => room.price <= maxPrice);
+  }
+
+  return rooms;
 };
 
 //recuperer une chambre par id
 export const getRoomById = async (id) => {
   const hotel = await readHotel();
   return hotel.rooms.find(r => r.id === parseInt(id));
-};
-
-//filtre les chambres par capacite
-export const getRoomsByCapacity = async (capacity) => {
-  const hotel = await readHotel();
-  return hotel.rooms.filter(r => r.capacity >= parseInt(capacity));
-};
-
-//filtre les chambres par prix maximum
-export const getRoomsByMaxPrice = async (maxPrice) => {
-  const hotel = await readHotel();
-  return hotel.rooms.filter(r => r.price <= parseInt(maxPrice));
 };
 
 //reserver une chambre

@@ -1,27 +1,16 @@
 import express from 'express';
 import * as clientController from '../controllers/client.controller.js';
+import { verifyApiKey } from '../middleware/apiKey.js';
+import { validate, validateQuery } from '../middleware/validate.js';
+import { clientBookingSchema, roomFiltersSchema } from '../validators/schemas.js';
 
 const router = express.Router();
 
-//GET /api/hotel
-//recupere les informations de l'hotel
+router.use(verifyApiKey);
 router.get('/hotel', clientController.getHotelInfo);
-
-
-//GET /api/rooms
-//liste toutes les chambres
-router.get('/rooms', clientController.listRooms);
-
-//GET /api/rooms/:id
-//recupere une chambre par id
+router.get('/rooms', validateQuery(roomFiltersSchema), clientController.listRooms);
 router.get('/rooms/:id', clientController.getRoom);
-
-//POST /api/rooms/:roomId/book
-//reserve une chambre
-router.post('/rooms/:roomId/book', clientController.bookRoom);
-
-//DELETE /api/bookings/:bookingId
-//annule une reservation
+router.post('/rooms/:roomId/book', validate(clientBookingSchema), clientController.bookRoom);
 router.delete('/bookings/:bookingId', clientController.cancelBooking);
 
 export default router;

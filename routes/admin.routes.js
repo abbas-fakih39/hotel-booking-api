@@ -1,31 +1,17 @@
 import express from 'express';
 import * as adminController from '../controllers/admin.controller.js';
+import { verifyApiKey } from '../middleware/apiKey.js';
+import { validate } from '../middleware/validate.js';
+import { addClientSchema, updateClientSchema, bookRoomSchema } from '../validators/schemas.js';
 
 const router = express.Router();
 
-//GET /api/admin/clients
-//liste tous les clients
+router.use(verifyApiKey);
 router.get('/clients', adminController.listClients);
-
-//GET /api/admin/clients/:id
-//recupere un client specifique
 router.get('/clients/:id', adminController.getClient);
-
-//POST /api/admin/clients
-//ajoute un nouveau client
-router.post('/clients', adminController.addClient);
-
-//PUT /api/admin/clients/:id
-//met a jour un client
-router.put('/clients/:id', adminController.updateClient);
-
-//POST /api/admin/clients/:clientId/book/:roomId
-//reserve une chambre pour un client
-router.post('/clients/:clientId/book/:roomId', adminController.bookRoom);
-
-
-//DELETE /api/admin/bookings/:bookingId
-//annule une reservation
+router.post('/clients', validate(addClientSchema), adminController.addClient);
+router.put('/clients/:id', validate(updateClientSchema), adminController.updateClient);
+router.post('/clients/:clientId/book/:roomId', validate(bookRoomSchema), adminController.bookRoom);
 router.delete('/bookings/:bookingId', adminController.cancelBooking);
 
 export default router;

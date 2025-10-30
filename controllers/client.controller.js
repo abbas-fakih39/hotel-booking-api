@@ -22,28 +22,21 @@ export const getHotelInfo = async (req, res) => {
   }
 };
 
-//lister les chambres
+//lister les chambres avec filtres
 export const listRooms = async (req, res) => {
   try {
-    let rooms;
+    // Récupérer les filtres depuis query params
+    const filters = {
+      capacity: req.query.capacity,
+      maxPrice: req.query.maxPrice
+    };
+
+    const rooms = await clientService.getAllRooms(filters);
     
-    // Filtrer par capacite
-    if (req.query.capacity) {
-      rooms = await clientService.getRoomsByCapacity(req.query.capacity);
-    }
-    // Filtrer par prix maximum 
-    else if (req.query.maxPrice) {
-      rooms = await clientService.getRoomsByMaxPrice(req.query.maxPrice);
-    }
-    //retourner toutes les chambres
-    else {
-      rooms = await clientService.getAllRooms();
-    }
-    
-    res.json({ 
-      success: true, 
+    res.json({
+      success: true,
       count: rooms.length,
-      data: rooms 
+      data: rooms
     });
   } catch (error) {
     handleError(res, error, 'Erreur lors de la récupération des chambres');
@@ -69,7 +62,6 @@ export const getRoom = async (req, res) => {
   }
 };
 
-
 //reserver une chambre
 //POST /api/rooms/:roomId/book
 export const bookRoom = async (req, res) => {
@@ -81,9 +73,8 @@ export const bookRoom = async (req, res) => {
   }
 };
 
-
- //annuler une reservation
- //DELETE /api/bookings/:bookingId
+//annuler une reservation
+//DELETE /api/bookings/:bookingId
 export const cancelBooking = async (req, res) => {
   try {
     const result = await clientService.cancelBooking(req.params.bookingId);
