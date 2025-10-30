@@ -52,3 +52,8 @@ export const roomFiltersSchema = z.object({
   capacity: z.string().regex(/^[0-9]+$/).optional(),
   maxPrice: z.string().regex(/^[0-9]+$/).optional()
 });
+
+export const loginSchema = z.object({
+  email: z.string().email('Email invalide'),
+  password: z.string().min(6, 'Le mot de passe doit contenir au moins 6 caractères')
+});

@@ -1,0 +1,11 @@
+{
+  "admins": [
+    {
+      "id": 1,
+      "email": "admin@hotel.com",
+      "password": "$2b$10$PQI83av.R7pKR/Swj.p6a.tVJOcr4uRkE6RSzYbr3Ln5px.HLN7cG",
+      "name": "Admin Principal",
+      "role": "admin"
+    }
+  ]
+}
